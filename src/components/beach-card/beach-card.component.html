@@ -1,18 +1,21 @@
-<a *ngIf="beach" class="beach-card__link" href="/beach/{{ beach.name.toLowerCase().replaceAll(' ', '-') }}">
-  <article class="beach-card">
-    <figure class="beach-card__media">
-      <img [src]="beach.coverUrl" [alt]="beach.name" loading="lazy">
-      <div *ngIf="beach.blueFlag" class="beach-card__flag beach-card__flag--blue">Bandera Azul</div>
-    </figure>
-    <div class="beach-card__details">
-      <header class="beach-card__header">
-        <h3 class="beach-card__name">{{ beach.name }}</h3>
-        <div class="beach-card__location">
-          <p class="beach-card__island">{{ beach.island }}</p>
-        </div>
-      </header>
-      <p class="beach-card__size">{{ beach.length }} metros de longitud</p>
-    </div>
-  </article>
-</a>
-<div *ngIf="!beach">Playa no disponible</div>
+<ion-card *ngIf="beach" [routerLink]="['/beach', beach.name.toLowerCase().replaceAll(' ', '-')]" class="beach-card">
+  <ion-img [src]="beach.coverUrl" [alt]="beach.name" loading="lazy"></ion-img>
+
+  <div *ngIf="beach.blueFlag" class="beach-card__flag beach-card__flag--blue">Bandera Azul</div>
+
+  <ion-card-content class="beach-card__details">
+    <ion-card-header>
+      <ion-card-title class="beach-card__name">{{ beach.name }}</ion-card-title>
+      <div class="beach-card__location">
+        <ion-label class="beach-card__island">{{ beach.island }}</ion-label>
+      </div>
+    </ion-card-header>
+
+    <p class="beach-card__size">{{ beach.length }} metros de longitud</p>
+  </ion-card-content>
+</ion-card>
+
+<!-- Fallback when beach is not available -->
+<ion-card *ngIf="!beach">
+  <ion-card-content>Playa no disponible</ion-card-content>
+</ion-card>

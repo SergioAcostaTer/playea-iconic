@@ -1,0 +1,7 @@
+{
+  "name": "playea",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

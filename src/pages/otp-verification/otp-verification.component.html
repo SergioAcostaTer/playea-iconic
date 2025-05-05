@@ -1,0 +1,39 @@
+<div class="otp-verification">
+    <a class="otp-verification__logo" href="/">PLAYEA</a>
+    <h1 class="otp-verification__title">Verificación OTP</h1>
+    <p class="otp-verification__description">Por favor, revisa tu correo www.pepito&#64;gmail.com para poder poner el código</p>
+    
+    <div class="otp-verification__form">
+        <div class="otp-verification__inputs">
+            <input 
+                type="text" 
+                maxlength="1" 
+                required 
+                class="otp-verification__input"
+                (keyup)="onKeyUp($event, 1)"
+                #input1>
+            <input 
+                type="text" 
+                maxlength="1" 
+                required 
+                class="otp-verification__input"
+                (keyup)="onKeyUp($event, 2)"
+                #input2>
+            <input 
+                type="text" 
+                maxlength="1" 
+                required 
+                class="otp-verification__input"
+                (keyup)="onKeyUp($event, 3)"
+                #input3>
+            <input 
+                type="text" 
+                maxlength="1" 
+                required 
+                class="otp-verification__input"
+                (keyup)="onKeyUp($event, 4)"
+                #input4>
+        </div>
+        <button type="button" (click)="onSubmit()" class="otp-verification__button">Confirmar</button>
+    </div>
+</div>

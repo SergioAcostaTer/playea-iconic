@@ -1,0 +1,13 @@
+<div *ngIf="beaches?.length; else emptyState" class="ranking-list" role="list">
+  <app-ranking-card 
+    *ngFor="let beach of beaches; trackBy: trackById"
+    [beach]="beach"
+    class="ranking-list__item"
+    role="listitem">
+  </app-ranking-card>
+</div>
+
+<!-- Mensaje cuando no hay playas -->
+<ng-template #emptyState>
+  <p class="ranking-list ranking-list--empty">No hay playas en el ranking.</p>
+</ng-template>

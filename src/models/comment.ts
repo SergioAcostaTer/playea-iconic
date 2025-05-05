@@ -1,5 +1,9 @@
 export interface Comment {
-    author: string;
-    rating: number;
-    text: string;
+  id: string,
+  text: string,
+  rating: number,
+  userId: string,
+  beachId: string,
+  createdAt: string,
+  updatedAt: string
 }

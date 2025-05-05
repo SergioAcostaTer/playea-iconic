@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TitlePageComponent } from '../../components/title-page/title-page.component';
 import { BeachGridComponent } from '../../components/beach-grid/beach-grid.component';
-import { getAllBeaches } from '../../services/getBeaches';
+import { FavoritesService } from '../../services/favourites.service';
+import { AuthStateService } from '../../services/auth-state.service';
+import { Beach } from '../../models/beach';
 
 @Component({
   selector: 'app-user-favourites',
@@ -10,18 +12,43 @@ import { getAllBeaches } from '../../services/getBeaches';
   imports: [CommonModule, BeachGridComponent, TitlePageComponent],
   templateUrl: './favourite.component.html',
 })
-export class FavouritePageComponent {
-  categories = [];
-  beaches = [];
+export class FavouritePageComponent implements OnInit {
+  beaches: Beach[] = [];
   loading = true;
 
-  async ngOnInit() {
-    try {
-      this.beaches = await getAllBeaches();
-    } catch (error) {
-      console.error('Error fetching beaches:', error);
-    } finally {
-      this.loading = false;
-    }
+  private authStateService = inject(AuthStateService);
+  private favoritesService = inject(FavoritesService);
+
+  ngOnInit() {
+    this.authStateService.user$.subscribe({
+      next: (user) => {
+        if (user) {
+          this.favoritesService.getFavoriteBeachesDetails(user.uid).subscribe({
+            next: (beaches) => {
+              this.beaches = beaches;
+              this.loading = false;
+            },
+            error: (error) => {
+              console.error('Error fetching favorite beaches:', error);
+              this.beaches = [];
+              this.loading = false;
+            },
+            complete: () => {
+            },
+          });
+        } else {
+          console.log('No authenticated user found');
+          this.beaches = [];
+          this.loading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error subscribing to user state:', error);
+        this.beaches = [];
+        this.loading = false;
+      },
+      complete: () => {
+      },
+    });
   }
 }

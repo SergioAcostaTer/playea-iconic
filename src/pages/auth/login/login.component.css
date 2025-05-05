@@ -1,0 +1,223 @@
+.login {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--login-secondary-bg);
+  overflow: hidden;
+}
+
+.login__panel {
+  width: 50%;
+  height: 100%;
+}
+
+.login__logo {
+  color: #000;
+}
+
+.login__title-icon {
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.login__panel--right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  text-align: center;
+}
+
+.login__title {
+  font-size: 2.5rem;
+  display: flex;
+}
+
+.login__subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.login__text {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.login__link {
+  color: var(--login-button-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+}
+
+.login__input-wrapper {
+  width: 100%;
+}
+
+.login__password-wrapper {
+  width: 100%;
+}
+
+.login__password-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--login-border-color); /* Borde por defecto */
+  border-radius: 5px;
+  background-color: var(--login-input-bg); /* Fondo del contenedor */
+}
+
+.login__password-toggle {
+  cursor: pointer;
+  padding: 0 10px;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.login__password-icon {
+  width: 20px; /* Ajustado para que coincida con el diseño del componente de registro */
+  height: 20px;
+}
+
+.login__input {
+  background-color: var(--login-input-bg);
+  border: 1px solid var(--login-border-color);
+  padding: 12px;
+  border-radius: 5px;
+  color: var(--login-text-color);
+  width: 100%;
+  font-size: 1rem;
+}
+
+.login__input--password {
+  padding-right: 40px; /* Espacio para el ícono */
+  border: none; /* Sin borde en el input */
+  background: transparent; /* Fondo transparente */
+  flex: 1; /* Ocupa el espacio disponible */
+}
+
+.login__input::placeholder {
+  color: var(--login-placeholder-color);
+}
+
+.login__forgot-link {
+  color: var(--login-button-color);
+  align-self: flex-end;
+  margin-top: -10px;
+  font-size: 0.9em;
+}
+
+.login__submit {
+  background-color: var(--login-button-color);
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  color: var(--button-text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  font-weight: bold;
+}
+
+.login__submit:hover {
+  background-color: var(--login-button-hover);
+}
+
+.login__submit:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.login__divider {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.login__validation-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.login__validation-message {
+  font-size: 0.8rem;
+  margin-top: 2px; /* Espaciado consistente con el componente de registro */
+  text-align: left;
+  color: red;
+}
+
+.login__input--error {
+  border: 1px solid red !important;
+}
+
+.login__input--valid {
+  border: 1px solid green !important;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.social-buttons__button {
+  background: none;
+  border: 1px solid var(--login-border-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: var(--login-text-color);
+  cursor: pointer;
+  transition: border 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-buttons__button:hover {
+  border-color: var(--login-button-color);
+}
+
+.panel-image {
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  position: relative;
+}
+
+.panel-image__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 742px) {
+  .login {
+    flex-direction: column;
+  }
+  .panel-image {
+    display: none;
+  }
+  .login__panel {
+    width: 100%;
+  }
+}

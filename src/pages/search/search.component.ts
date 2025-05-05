@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; 
-import { FormsModule } from '@angular/forms'; 
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { BeachGridComponent } from '../../components/beach-grid/beach-grid.component';
+import { FilterPanelComponent } from '../../components/filter-panel/filter-panel.component';
 import { Beach } from '../../models/beach';
-import { searchBeaches } from '../../services/search';
+import { Category } from '../../models/category';
 import { debounceTime, switchMap, Subject } from 'rxjs';
+import { SearchBeaches } from '../../services/searchBeaches.service'; // Importamos la clase correcta
+import { GetCategoriesService } from '../../services/getCategories.service'; // Importamos el servicio de categorías
 
 @Component({
   selector: 'app-search',
@@ -13,59 +16,116 @@ import { debounceTime, switchMap, Subject } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    BeachGridComponent
+    BeachGridComponent,
+    FilterPanelComponent,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
   beaches: Beach[] = [];
-  loading = true;
+  categories: Category[] = [];
+  loading = false;
   searchQuery: string = '';
-  private searchQuerySubject = new Subject<string>();
+  islandFilter: string = '';
+  filters = {
+    hasLifeguard: false,
+    hasSand: false,
+    hasRock: false,
+    hasShowers: false,
+    hasToilets: false,
+    hasFootShowers: false,
+  };
+  private searchSubject = new Subject<{ query: string; island: string; filters: any }>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private searchBeachService: SearchBeaches, // Inyectamos correctamente el servicio
+    private getCategoriesService: GetCategoriesService // Inyectamos el servicio de categorías
+  ) {}
 
-  ngOnInit() {
-    this.searchQuerySubject.pipe(
-      debounceTime(500),
-      switchMap((query: string) => {
-        this.loading = true;
-        return searchBeaches(query);
-      })
-    ).subscribe({
-      next: (beaches) => {
-        this.beaches = beaches;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching beaches:', error);
-        this.loading = false;
-      }
-    });
-
-    this.route.queryParams.subscribe(params => {
-      const query = params['q'] || '';
-      this.searchQuery = query;
-      this.searchQuerySubject.next(query);
-    });
-  }
-
-  updateQueryParam(query: string) {
-    if (query.trim()) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { q: query.trim() },
-        queryParamsHandling: 'merge',
-      });
-      this.searchQuerySubject.next(query);
-      this.loading = true;
+  async ngOnInit() {
+    try {
+      this.categories = await this.getCategoriesService.getCategories();
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
+
+    this.searchSubject
+      .pipe(
+        debounceTime(500),
+        switchMap(({ query, island, filters }) => {
+          this.loading = true;
+          return this.searchBeachService.searchBeaches(query, { island, ...filters });
+        })
+      )
+      .subscribe({
+        next: (beaches) => {
+          this.beaches = beaches;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching beaches:', error);
+          this.loading = false;
+        },
+      });
+
+    this.route.queryParams.subscribe((params) => {
+      const query = params['q'] || '';
+      const island = params['island'] || '';
+      this.searchQuery = query;
+      this.islandFilter = island;
+      this.triggerSearch();
+    });
   }
 
-  // Listen to input changes and update the URL/query parameter
+  triggerSearch() {
+    this.searchSubject.next({
+      query: this.searchQuery,
+      island: this.islandFilter,
+      filters: this.filters,
+    });
+  }
+
+  updateQueryParams() {
+    const queryParams: { [key: string]: string | null } = {};
+    if (this.searchQuery.trim()) {
+      queryParams['q'] = this.searchQuery.trim();
+    } else {
+      queryParams['q'] = null; // Remove query param if empty
+    }
+
+    if (this.islandFilter.trim()) {
+      queryParams['island'] = this.islandFilter.trim();
+    } else {
+      queryParams['island'] = null; // Explicitly remove island param if empty
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
+
   onSearchInputChange(event: any) {
-    const query = event.target.value;
-    this.updateQueryParam(query);
+    this.searchQuery = event.target.value;
+    this.updateQueryParams();
+    this.triggerSearch();
+  }
+
+  onFiltersChange(filters: any) {
+    this.islandFilter = filters.island || '';
+    this.filters = {
+      hasLifeguard: filters.hasLifeguard,
+      hasSand: filters.hasSand,
+      hasRock: filters.hasRock,
+      hasShowers: filters.hasShowers,
+      hasToilets: filters.hasToilets,
+      hasFootShowers: filters.hasFootShowers,
+    };
+    this.updateQueryParams();
+    this.triggerSearch();
   }
 }

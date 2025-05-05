@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Encuentra tu playa perfecta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Removed the search form section -->
+
+  <!-- Mobile Navigation Links -->
+  <div class="banner__mobile-nav">
+    <ion-router-link routerLink="/ranking" class="banner__mobile-nav--link">Ranking</ion-router-link>
+    <span class="banner__mobile-nav--separator">|</span>
+    <ion-router-link routerLink="/search" class="banner__mobile-nav--link">Búsqueda</ion-router-link>
+  </div>
+
+  <!-- Beach Grid -->
+  <div style="padding: 0.5rem;">
+    <app-beach-grid *ngIf="!loading" [beaches]="beaches" [showEmptyState]="true"></app-beach-grid>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading-indicator">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ion-content>

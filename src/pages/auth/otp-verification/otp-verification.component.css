@@ -1,0 +1,89 @@
+.otp-verification {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    letter-spacing: 1px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.otp-verification h1 {
+    margin-top: 35px;
+    font-size: 2.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.otp-verification p {
+    font-size: 0.9em;
+    margin-bottom: 50px;
+    max-width: 80%;
+}
+
+.otp-verification__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+}
+
+.otp-verification__inputs {
+    min-width: 300px;
+    width: 60vw;
+    max-width: 400px;
+    padding: 15px;
+    border: 3px solid var(--login-button-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.otp-verification__input {
+    width: 50px;
+    height: 65px;
+    border: 1px solid #000d;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.otp-verification__form button {
+    margin-top: 15px;
+    padding: 12px 30px;
+    background-color: var(--login-button-color);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1em;
+    width: 70%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    max-width: 500px;
+}
+
+.otp-verification__form button:hover {
+    box-shadow: 0 0 5px 0 var(--login-button-color);
+}
+
+@media (max-width: 550px) {
+    .otp-verification {
+        padding: 20px;
+        font-size: 13px;
+    }
+}
+
